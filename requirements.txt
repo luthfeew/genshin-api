@@ -1,0 +1,2 @@
+fastapi
+genshin==1.4.0
