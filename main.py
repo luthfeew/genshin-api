@@ -6,7 +6,6 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -40,6 +39,7 @@ uncensor_dict_ext = {
     "V": "Ѵ",
     "v": "ѵ",
     "u": "υ",
+    " ": "ﾠ",
 }
 
 
