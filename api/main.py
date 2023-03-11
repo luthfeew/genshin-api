@@ -1,9 +1,10 @@
 import genshin
+import datetime
+from deta import Deta
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -11,6 +12,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+db = Deta().Base("genshin-uid")
 cookies = {"ltuid": 119480035, "ltoken": "cnF7TiZqHAAvYqgCBoSPx5EjwezOh1ZHoqSHf7dT"}
 client = genshin.Client(cookies)
 
@@ -62,6 +64,7 @@ def uncensor(text: str, ext: bool = False):
 async def read_item(uid: int):
     try:
         data = await client.get_full_genshin_user(uid)
+        db.put({"uid": uid, "created_at": str(datetime.datetime.now())})
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
     return {"uid": uid, "data": data}
